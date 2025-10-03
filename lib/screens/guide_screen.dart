@@ -1,6 +1,11 @@
 // lib/screens/guide_screen.dart
+import 'package:farmiq_app/screens/add_product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:farmiq_app/utils/constants.dart';
+import 'package:farmiq_app/screens/chatbot_screen.dart';
+import 'package:farmiq_app/screens/calculator_screen.dart';
+import 'package:farmiq_app/screens/community_chat_screen.dart';
+import 'package:farmiq_app/screens/store_screen.dart';
 
 class GuideScreen extends StatelessWidget {
   const GuideScreen({super.key});
@@ -34,7 +39,19 @@ class GuideScreen extends StatelessWidget {
               description:
               "Use our tools to make informed decisions. Get instant answers from Farmy, explore disease guides, and use the Crop Calculator to plan your season.",
               button1Text: 'Ask Farmy',
+              onButton1Pressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ChatbotScreen()),
+                );
+              },
               button2Text: 'Open Calculator',
+              onButton2Pressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const CalculatorScreen()),
+                );
+              },
               isFirst: true,
             ),
             GuideTimelineStep(
@@ -44,6 +61,12 @@ class GuideScreen extends StatelessWidget {
               description:
               "You're not alone. Join our Community Chat to connect with fellow farmers, share experiences, and ask for advice.",
               button1Text: 'Join the Conversation',
+              onButton1Pressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const CommunityChatScreen()),
+                );
+              },
             ),
             GuideTimelineStep(
               imagePath: 'assets/images/vegetables.png',
@@ -52,7 +75,19 @@ class GuideScreen extends StatelessWidget {
               description:
               "Take control of your finances. Purchase quality supplies from our Store and list your harvest on our marketplace to reach more buyers.",
               button1Text: 'Visit the Store',
+              onButton1Pressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const StoreScreen()),
+                );
+              },
               button2Text: 'Sell Your Products',
+              onButton2Pressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const AddProductScreen()),
+                );
+              },
               isLast: true,
             ),
           ],
@@ -68,7 +103,9 @@ class GuideTimelineStep extends StatelessWidget {
   final String title;
   final String description;
   final String button1Text;
+  final VoidCallback onButton1Pressed;
   final String? button2Text;
+  final VoidCallback? onButton2Pressed;
   final bool isFirst;
   final bool isLast;
 
@@ -79,7 +116,9 @@ class GuideTimelineStep extends StatelessWidget {
     required this.title,
     required this.description,
     required this.button1Text,
+    required this.onButton1Pressed,
     this.button2Text,
+    this.onButton2Pressed,
     this.isFirst = false,
     this.isLast = false,
   });
@@ -191,7 +230,7 @@ class GuideTimelineStep extends StatelessWidget {
                             alignment: WrapAlignment.center, // Center the buttons
                             children: [
                               ElevatedButton(
-                                onPressed: () {},
+                                onPressed: onButton1Pressed,
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: kPrimaryColor,
                                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -201,7 +240,7 @@ class GuideTimelineStep extends StatelessWidget {
                               ),
                               if (button2Text != null)
                                 ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: onButton2Pressed,
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: kPrimaryColor,
                                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
