@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart'; // Import the logging package
 
 class AuthService {
-  final String _baseUrl = 'http://10.0.2.2:3000/api/auth';
+  final String _baseUrl = 'http://172.30.2.59:3000/api/auth';
   // Create a logger instance for this file
   final _log = Logger('AuthService');
 

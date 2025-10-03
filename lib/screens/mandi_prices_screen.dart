@@ -11,82 +11,126 @@ class MandiPricesScreen extends StatefulWidget {
 }
 
 class _MandiPricesScreenState extends State<MandiPricesScreen> {
-  late Future<List<MandiRecord>> futureMandiPrices;
+  // --- STATE MANAGEMENT ---
+  // Variables to hold the user's current selections.
+  String _selectedState = 'Punjab'; // Default state to show first
+  int _offset = 0; // Start at the beginning (page 1)
+  final int _limit = 50; // The number of items to fetch per page
 
-  @override
-  void initState() {
-    super.initState();
-    futureMandiPrices = fetchMandiPrices();
-  }
+  // A list of states for the dropdown menu
+  final List<String> _states = [
+    'Punjab', 'Uttar Pradesh', 'Maharashtra', 'Haryana', 'Rajasthan', 'Andhra Pradesh', 'All States'
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mandi Prices'),
-        backgroundColor: Colors.green[700],
+        backgroundColor: const Color(0xFF3B5D46), // Matching your theme
       ),
-      // --- START OF CHANGES ---
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 1. This is the new top line you wanted
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-            child: Text(
-              "The latest mandi rates (per quintal)",
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.grey[700],
-              ),
+          // --- UI CONTROLS ---
+          // This container holds the state dropdown and pagination buttons.
+          Container(
+            padding: const EdgeInsets.all(8.0),
+            color: Colors.white,
+            child: Column(
+              children: [
+                // Dropdown for selecting a state
+                DropdownButton<String>(
+                  isExpanded: true,
+                  value: _selectedState,
+                  hint: const Text("Select a State"),
+                  onChanged: (String? newValue) {
+                    if (newValue != null) {
+                      // When a new state is selected, reset offset and rebuild
+                      setState(() {
+                        _selectedState = newValue;
+                        _offset = 0; // Go back to the first page
+                      });
+                    }
+                  },
+                  items: _states.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+                // Row for Previous/Next page buttons
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton(
+                      onPressed: _offset == 0 ? null : () { // Disable if on the first page
+                        setState(() {
+                          _offset -= _limit;
+                        });
+                      },
+                      child: const Text('<< Previous'),
+                    ),
+                    Text('Page ${_offset ~/ _limit + 1}'),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          _offset += _limit;
+                        });
+                      },
+                      child: const Text('Next >>'),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
 
-          // 2. The FutureBuilder is wrapped in an Expanded widget
-          // This tells it to fill all the remaining space below the text
+          // --- DYNAMIC DATA LIST ---
+          // The FutureBuilder is now wrapped in an Expanded widget
+          // and its 'future' call is dynamic.
           Expanded(
             child: FutureBuilder<List<MandiRecord>>(
-              future: futureMandiPrices,
+              // VITAL: The key tells Flutter to re-run the future when the state or offset changes.
+              key: ValueKey('$_selectedState-$_offset'),
+              // DYNAMIC CALL: Uses the current state variables to fetch data.
+              future: fetchMandiPrices(
+                state: _selectedState == 'All States' ? null : _selectedState,
+                offset: _offset,
+              ),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
-                } else if (snapshot.hasData) {
-                  return ListView.builder(
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      final record = snapshot.data![index];
-                      return Card(
-                        margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                        child: ListTile(
-                          title: Text(
-                            record.commodity,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          subtitle: Text('${record.market}, ${record.state}'),
-                          trailing: Text(
-                            '₹${record.price}',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                              color: Colors.green,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                } else {
-                  return const Center(child: Text('No data found.'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Center(child: Text('No records found.'));
                 }
+
+                // If data is available, build the list
+                final records = snapshot.data!;
+                return ListView.builder(
+                  itemCount: records.length,
+                  itemBuilder: (context, index) {
+                    final record = records[index];
+                    return Card(
+                      margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                      child: ListTile(
+                        title: Text(record.commodity, style: const TextStyle(fontWeight: FontWeight.bold)),
+                        subtitle: Text('${record.market}, ${record.state}'),
+                        trailing: Text(
+                          '₹${record.price}',
+                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.green),
+                        ),
+                      ),
+                    );
+                  },
+                );
               },
             ),
           ),
         ],
       ),
-      // --- END OF CHANGES ---
     );
   }
 }

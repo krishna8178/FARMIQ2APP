@@ -1,73 +1,70 @@
-// widgets/mandi_prices_widget.dart
+// services/mandi_service.dart
 
-import 'package:flutter/material.dart';
-import '../services/mandi_service.dart'; // Make sure this path is correct
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
-class MandiPricesWidget extends StatefulWidget {
-  const MandiPricesWidget({super.key});
+// 1. Data Model (Structurally the same, but with improved parsing)
+class MandiRecord {
+  final String commodity;
+  final String market;
+  final String state;
+  final String price;
 
-  @override
-  State<MandiPricesWidget> createState() => _MandiPricesWidgetState();
+  MandiRecord({
+    required this.commodity,
+    required this.market,
+    required this.state,
+    required this.price,
+  });
+
+  factory MandiRecord.fromJson(Map<String, dynamic> json) {
+    return MandiRecord(
+      commodity: json['commodity'] ?? 'N/A',
+      market: json['market'] ?? 'N/A',
+      state: json['state'] ?? 'N/A',
+      price: (json['modal_price'] ?? '0').toString(),
+    );
+  }
 }
 
-class _MandiPricesWidgetState extends State<MandiPricesWidget> {
-  late Future<List<MandiRecord>> futureMandiPrices;
+// 2. Updated function to fetch data with state and offset filters
+Future<List<MandiRecord>> fetchMandiPrices({String? state, int offset = 0}) async {
+  // Updated API Key
+  const String apiKey = "579b464db66ec23bdd00000173814e3914264bdb4749bdf14a30004c";
+  const String baseUrl = "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070";
+  const int limit = 50; // Increased limit to get more results per page
 
-  @override
-  void initState() {
-    super.initState();
-    futureMandiPrices = fetchMandiPrices();
+  // Start building the URL with the new parameters
+  var urlBuilder = Uri.parse(baseUrl).replace(queryParameters: {
+    'api-key': apiKey,
+    'format': 'json',
+    'limit': limit.toString(),
+    'offset': offset.toString(),
+  }).toString();
+
+  // If a state is provided, add the filter to the URL
+  if (state != null && state.isNotEmpty) {
+    urlBuilder += '&filters[state.keyword]=${Uri.encodeComponent(state)}';
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return ExpansionTile(
-      leading: const Icon(Icons.bar_chart_rounded), // Icon for the drawer item
-      title: const Text('Mandi Prices'),
-      children: <Widget>[
-        // This is the content that will be shown when expanded
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: FutureBuilder<List<MandiRecord>>(
-            future: futureMandiPrices,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Center(child: CircularProgressIndicator()),
-                );
-              } else if (snapshot.hasError) {
-                return Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Center(child: Text('Error: Could not load prices.')),
-                );
-              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Center(child: Text('No prices found.')),
-                );
-              } else {
-                // Build a column of the price data
-                return Column(
-                  children: snapshot.data!.map((record) {
-                    return ListTile(
-                      title: Text(record.commodity),
-                      subtitle: Text('${record.market}, ${record.state}'),
-                      trailing: Text(
-                        '₹${record.price}',
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                );
-              }
-            },
-          ),
-        ),
-      ],
-    );
+  try {
+    final response = await http.get(Uri.parse(urlBuilder));
+
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+      // Safely handle cases where 'records' might not exist
+      final List records = jsonData['records'] ?? [];
+
+      if (records.isEmpty) {
+        return []; // Return an empty list if no records are found
+      }
+
+      return records.map((item) => MandiRecord.fromJson(item)).toList();
+    } else {
+      throw Exception('Failed to load mandi prices. Status Code: ${response.statusCode}');
+    }
+  } catch (e) {
+    // Catch network or other errors
+    throw Exception('An error occurred: $e');
   }
 }

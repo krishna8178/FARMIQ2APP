@@ -1,4 +1,5 @@
 // lib/screens/home_screen.dart
+import 'package:farmiq_app/screens/guide_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:farmiq_app/models/user.dart'; // Make sure User model is imported
 import 'package:farmiq_app/models/weather.dart';
@@ -204,7 +205,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 const SizedBox(height: 8),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const GuideScreen()),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: kBackgroundColor,
                     foregroundColor: kPrimaryColor,
@@ -213,7 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                   ),
-                  child: const Text('Learn More', style: TextStyle(fontWeight: FontWeight.bold)),
+                  child: const Text('Guide', style: TextStyle(fontWeight: FontWeight.bold)),
                 ),
               ],
             ),
