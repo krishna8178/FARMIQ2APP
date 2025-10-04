@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:farmiq_app/providers/cart_provider.dart'; // This line is crucial
+import 'package:farmiq_app/providers/cart_provider.dart';
 import 'package:farmiq_app/screens/auth_check_screen.dart';
 
-void main() {
+// The main function must now be async.
+Future<void> main() async {
+  // --- THIS IS THE FIX ---
+  // This line ensures that the 'bridge' between Flutter and the native
+  // Android/iOS code is ready before any plugins are used.
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(
     ChangeNotifierProvider(
       create: (context) => CartProvider(),

@@ -5,46 +5,36 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.0 <4.0.0' # Updated for modern Dart
-  # The original sdk: ^3.9.2 is too restrictive, this is a better practice.
+  sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  http: ^1.2.1
-  url_launcher: ^6.2.6
+
+  # Networking
+  http: ^1.5.0
+  socket_io_client: ^3.1.2
+  url_launcher: ^6.3.2
+
+  # State Management
   provider: ^6.1.1
+
+  # Local Storage
   shared_preferences: ^2.2.2
-  shimmer: ^3.0.0
-  socket_io_client: ^2.0.0-beta-4 # Note: this is a beta version
-  image_picker: ^0.8.4+11 # Note: this version is quite old
-  intl: ^0.17.0
-  logging: ^1.1.0
+
+  # UI & Utility
   cupertino_icons: ^1.0.8
+  image_picker: ^1.2.0
+  intl: ^0.20.2
+  logging: ^1.1.0
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
 
-# This is the single, consolidated Flutter section.
-# The duplicate block has been removed.
 flutter:
   uses-material-design: true
-
-  # Asset declarations are now correctly indented.
   assets:
     - assets/images/
-
-  # You can uncomment the fonts section below if you need to add custom fonts later.
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700

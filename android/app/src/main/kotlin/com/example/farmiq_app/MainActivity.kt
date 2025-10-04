@@ -1,4 +1,5 @@
-package com.example.my_flutter_app // Change this to your flutter app's package name
+// 1. CORRECTED THE PACKAGE NAME TO MATCH YOUR PROJECT
+package com.example.farmiq_app
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -9,11 +10,10 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.EventChannel
 
 class MainActivity: FlutterActivity() {
-    // 1. Define a channel name
-    private val BROADCAST_CHANNEL = "com.example.my_flutter_app/broadcast"
+    // 2. UPDATED THE CHANNEL NAME FOR CONSISTENCY
+    private val BROADCAST_CHANNEL = "com.example.farmiq_app/broadcast"
 
-    // 2. Define your broadcast action
-    // THIS MUST MATCH THE ACTION YOU SEND FROM THE TEST APP
+    // This must match the action you send from the test app
     private val MY_BROADCAST_ACTION = "com.yourapp.MY_CUSTOM_ACTION"
 
     private var broadcastReceiver: BroadcastReceiver? = null
@@ -21,7 +21,6 @@ class MainActivity: FlutterActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
 
-        // 3. Set up the EventChannel
         EventChannel(flutterEngine.dartExecutor.binaryMessenger, BROADCAST_CHANNEL).setStreamHandler(
             object : EventChannel.StreamHandler {
                 override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
@@ -41,7 +40,6 @@ class MainActivity: FlutterActivity() {
         )
     }
 
-    // 4. Helper function to create the BroadcastReceiver
     private fun createBroadcastReceiver(events: EventChannel.EventSink?): BroadcastReceiver {
         return object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
