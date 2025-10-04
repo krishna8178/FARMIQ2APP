@@ -9,7 +9,7 @@ import 'package:farmiq_app/models/cart_model.dart';
 import 'package:farmiq_app/models/ngo_model.dart'; // Import the new NGO model
 
 class ApiService {
-  final String _baseUrl = 'http://172.30.2.59:3000/api';
+  final String _baseUrl = 'http://10.0.2.2:3000/api';
   final _log = Logger('ApiService');
 
   Future<String?> _getToken() async {
