@@ -7,7 +7,7 @@ import 'package:farmiq_app/services/weather_service.dart';
 import 'package:farmiq_app/screens/store_screen.dart';
 import 'package:farmiq_app/screens/community_chat_screen.dart';
 import 'package:farmiq_app/screens/disease_guide_screen.dart';
-import 'package:farmiq_app/screens/calculator_screen.dart';
+import 'package:farmiq_app/screens/calculator_screen.dart'; // Updated Import
 import 'package:farmiq_app/screens/chatbot_screen.dart';
 import 'package:farmiq_app/screens/profile_screen.dart';
 import 'package:farmiq_app/services/api_service.dart';
@@ -61,7 +61,8 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text(
           _currentUser != null ? 'Welcome, ${_currentUser!.name}!' : 'FARMIQ',
-          style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          style: const TextStyle(
+              fontWeight: FontWeight.bold, color: Colors.white),
         ),
         backgroundColor: kPrimaryColor,
         iconTheme: const IconThemeData(color: Colors.white),
@@ -69,7 +70,10 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: const Icon(Icons.person, color: Colors.white),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfileScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ProfileScreen()));
             },
           ),
         ],
@@ -110,7 +114,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.pop(context); // Close the drawer first
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const MandiPricesScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const MandiPricesScreen()),
                 );
               },
             ),
@@ -119,7 +124,10 @@ class _HomeScreenState extends State<HomeScreen> {
               title: const Text('My Profile'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfileScreen()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ProfileScreen()));
               },
             ),
             ListTile(
@@ -127,7 +135,10 @@ class _HomeScreenState extends State<HomeScreen> {
               title: const Text('Store'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const StoreScreen()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const StoreScreen()));
               },
             ),
             const Divider(),
@@ -151,7 +162,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const ChatbotScreen()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const ChatbotScreen()));
         },
         backgroundColor: const Color(0xFF3b5d46),
         child: const Icon(Icons.chat, color: Colors.white),
@@ -208,7 +220,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const GuideScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => const GuideScreen()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -219,7 +232,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                   ),
-                  child: const Text('Guide', style: TextStyle(fontWeight: FontWeight.bold)),
+                  child: const Text('Guide',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
                 ),
               ],
             ),
@@ -246,10 +260,17 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                Text(weather.locationName, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                Image.network('https://openweathermap.org/img/wn/${weather.icon}@2x.png', height: 50),
-                Text('${weather.temp.round()}°C', style: const TextStyle(color: Colors.white, fontSize: 20)),
-                Text('Feels like ${weather.feelsLike.round()}°C', style: const TextStyle(color: Colors.white70, fontSize: 12)),
+                Text(weather.locationName,
+                    style: const TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold)),
+                Image.network(
+                    'https://openweathermap.org/img/wn/${weather.icon}@2x.png',
+                    height: 50),
+                Text('${weather.temp.round()}°C',
+                    style: const TextStyle(color: Colors.white, fontSize: 20)),
+                Text('Feels like ${weather.feelsLike.round()}°C',
+                    style:
+                    const TextStyle(color: Colors.white70, fontSize: 12)),
               ],
             ),
           ),
@@ -270,10 +291,32 @@ class _HomeScreenState extends State<HomeScreen> {
         childAspectRatio: 1.2,
         children: [
           // Assumes you have these images in 'assets/images/'
-          _buildOptionCard('Community', 'assets/images/community.png', () => Navigator.push(context, MaterialPageRoute(builder: (context) => CommunityChatScreen()))),
-          _buildOptionCard('Products', 'assets/images/vegetables.png', () => Navigator.push(context, MaterialPageRoute(builder: (context) => const StoreScreen()))),
-          _buildOptionCard('Diseases', 'assets/images/syringe.png', () => Navigator.push(context, MaterialPageRoute(builder: (context) => DiseaseGuideScreen()))),
-          _buildOptionCard('Calculator', 'assets/images/calculator.png', () => Navigator.push(context, MaterialPageRoute(builder: (context) => CalculatorScreen()))),
+          _buildOptionCard(
+              'Community',
+              'assets/images/community.png',
+                  () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CommunityChatScreen()))),
+          _buildOptionCard(
+              'Products',
+              'assets/images/vegetables.png',
+                  () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const StoreScreen()))),
+          _buildOptionCard(
+              'Diseases',
+              'assets/images/syringe.png',
+                  () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => DiseaseGuideScreen()))),
+          _buildOptionCard(
+              'Calculator',
+              'assets/images/calculator.png',
+                  () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ProfitabilityCalculatorScreen()))),
         ],
       ),
     );
@@ -293,7 +336,8 @@ class _HomeScreenState extends State<HomeScreen> {
               width: 50,
               errorBuilder: (context, error, stackTrace) {
                 // Shows an icon if the image fails to load
-                return Icon(Icons.image_not_supported, size: 40, color: Colors.grey);
+                return Icon(Icons.image_not_supported,
+                    size: 40, color: Colors.grey);
               },
             ),
             const SizedBox(height: 10),
@@ -309,7 +353,10 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.symmetric(vertical: 20.0),
       child: Text(
         title,
-        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xFF3b5d46)),
+        style: const TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF3b5d46)),
       ),
     );
   }
@@ -321,7 +368,8 @@ class _HomeScreenState extends State<HomeScreen> {
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16),
         children: [
-          _buildFeaturedProductCard('Fertilizers', 'assets/images/fertilizer.png'),
+          _buildFeaturedProductCard(
+              'Fertilizers', 'assets/images/fertilizer.png'),
           _buildFeaturedProductCard('Seeds', 'assets/images/seed.png'),
           _buildFeaturedProductCard('Pesticides', 'assets/images/pesticide.png'),
         ],
@@ -341,7 +389,8 @@ class _HomeScreenState extends State<HomeScreen> {
               imagePath,
               height: 60,
               errorBuilder: (context, error, stackTrace) {
-                return Icon(Icons.image_not_supported, size: 50, color: Colors.grey);
+                return Icon(Icons.image_not_supported,
+                    size: 50, color: Colors.grey);
               },
             ),
             const SizedBox(height: 8),

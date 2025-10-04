@@ -3,7 +3,7 @@ import 'package:farmiq_app/screens/add_product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:farmiq_app/utils/constants.dart';
 import 'package:farmiq_app/screens/chatbot_screen.dart';
-import 'package:farmiq_app/screens/calculator_screen.dart';
+import 'package:farmiq_app/screens/calculator_screen.dart'; // UPDATED
 import 'package:farmiq_app/screens/community_chat_screen.dart';
 import 'package:farmiq_app/screens/store_screen.dart';
 
@@ -14,7 +14,8 @@ class GuideScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Farming Journey', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+        title: const Text('Your Farming Journey',
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
         backgroundColor: kPrimaryColor,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
@@ -42,14 +43,18 @@ class GuideScreen extends StatelessWidget {
               onButton1Pressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ChatbotScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const ChatbotScreen()),
                 );
               },
               button2Text: 'Open Calculator',
               onButton2Pressed: () {
+                // --- THIS IS THE CORRECTED NAVIGATION ---
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const CalculatorScreen()),
+                  MaterialPageRoute(
+                      builder: (context) =>
+                      const ProfitabilityCalculatorScreen()),
                 );
               },
               isFirst: true,
@@ -64,7 +69,8 @@ class GuideScreen extends StatelessWidget {
               onButton1Pressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const CommunityChatScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const CommunityChatScreen()),
                 );
               },
             ),
@@ -85,7 +91,8 @@ class GuideScreen extends StatelessWidget {
               onButton2Pressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const AddProductScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const AddProductScreen()),
                 );
               },
               isLast: true,
@@ -196,7 +203,8 @@ class GuideTimelineStep extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center, // Center the content
+                        crossAxisAlignment:
+                        CrossAxisAlignment.center, // Center the content
                         children: [
                           Image.asset(
                             imagePath,
@@ -227,26 +235,37 @@ class GuideTimelineStep extends StatelessWidget {
                           Wrap(
                             spacing: 8,
                             runSpacing: 8,
-                            alignment: WrapAlignment.center, // Center the buttons
+                            alignment:
+                            WrapAlignment.center, // Center the buttons
                             children: [
                               ElevatedButton(
                                 onPressed: onButton1Pressed,
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: kPrimaryColor,
-                                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                                  textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 10),
+                                  textStyle: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                                child: Text(button1Text, style: const TextStyle(color: Colors.white)),
+                                child: Text(button1Text,
+                                    style:
+                                    const TextStyle(color: Colors.white)),
                               ),
                               if (button2Text != null)
                                 ElevatedButton(
                                   onPressed: onButton2Pressed,
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: kPrimaryColor,
-                                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                                    textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16, vertical: 10),
+                                    textStyle: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold),
                                   ),
-                                  child: Text(button2Text!, style: const TextStyle(color: Colors.white)),
+                                  child: Text(button2Text!,
+                                      style: const TextStyle(
+                                          color: Colors.white)),
                                 ),
                             ],
                           ),
