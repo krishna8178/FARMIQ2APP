@@ -15,37 +15,39 @@ class CalculatorResultsScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Row for the 3 main result cards
-            Row(
+            // --- START OF FIX ---
+            // Replaced the Row with a GridView for better item spacing and wrapping.
+            GridView.count(
+              crossAxisCount: 3, // We still want 3 items in a row
+              shrinkWrap: true, // Important for use inside a SingleChildScrollView
+              physics:
+              const NeverScrollableScrollPhysics(), // The parent is already scrollable
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 8,
+              childAspectRatio:
+              0.85, // Adjust this value to change card height vs width
               children: [
-                Expanded(
-                  child: _buildResultCard(
-                    title: 'Required Investment',
-                    value: '₹2,250,000.00',
-                    icon: Icons.savings,
-                    iconColor: Colors.orange,
-                  ),
+                _buildResultCard(
+                  title: 'Required Investment',
+                  value: '₹2,250,000.00',
+                  icon: Icons.savings,
+                  iconColor: Colors.orange,
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _buildResultCard(
-                    title: 'Expected Yield',
-                    value: '120.00 tons',
-                    icon: Icons.trending_up,
-                    iconColor: Colors.blue,
-                  ),
+                _buildResultCard(
+                  title: 'Expected Yield',
+                  value: '120.00 tons',
+                  icon: Icons.trending_up,
+                  iconColor: Colors.blue,
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _buildResultCard(
-                    title: 'Potential Profit',
-                    value: '₹9,750,000.00',
-                    icon: Icons.monetization_on,
-                    iconColor: Colors.green,
-                  ),
+                _buildResultCard(
+                  title: 'Potential Profit',
+                  value: '₹9,750,000.00',
+                  icon: Icons.monetization_on,
+                  iconColor: Colors.green,
                 ),
               ],
             ),
+            // --- END OF FIX ---
             const SizedBox(height: 24),
 
             // AI's Explanation Card
@@ -67,29 +69,40 @@ class CalculatorResultsScreen extends StatelessWidget {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(12.0), // Reduced padding slightly
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment:
+          MainAxisAlignment.center, // Center content vertically
           children: [
             Row(
               children: [
-                Icon(icon, color: iconColor, size: 18),
-                const SizedBox(width: 8),
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey[700],
+                Icon(icon, color: iconColor, size: 16),
+                const SizedBox(width: 4),
+                // Use Flexible to allow the title to wrap if needed
+                Flexible(
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 11, // Reduced font size
+                      color: Colors.grey[700],
+                    ),
+                    softWrap: true,
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 8),
-            Text(
-              value,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+            // FittedBox scales down the text to ensure it fits within the available space
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                value,
+                style: const TextStyle(
+                  fontSize: 15, // Slightly reduced font size
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.start,
               ),
             ),
           ],
